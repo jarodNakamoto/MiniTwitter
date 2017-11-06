@@ -1,3 +1,5 @@
+package interfaces;
+
 
 /**
  * Write a description of interface Subject here.

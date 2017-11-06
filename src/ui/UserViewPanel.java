@@ -1,19 +1,20 @@
+package ui;
 
 /**
- * Write a description of class UserGroup here.
+ * Write a description of class UserViewPanel here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class UserGroup
+public class UserViewPanel
 {
     // instance variables - replace the example below with your own
     private int x;
 
     /**
-     * Constructor for objects of class UserGroup
+     * Constructor for objects of class UserViewPanel
      */
-    public UserGroup()
+    public UserViewPanel()
     {
         // initialise instance variables
         x = 0;

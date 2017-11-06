@@ -1,3 +1,4 @@
+package interfaces;
 
 /**
  * Write a description of interface Observer here.

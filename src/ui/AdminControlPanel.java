@@ -1,19 +1,20 @@
+package ui;
 
 /**
- * Write a description of class UserViewPanel here.
+ * Write a description of class AdminControlPanel here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class UserViewPanel
+public class AdminControlPanel
 {
     // instance variables - replace the example below with your own
     private int x;
 
     /**
-     * Constructor for objects of class UserViewPanel
+     * Constructor for objects of class AdminControlPanel
      */
-    public UserViewPanel()
+    public AdminControlPanel()
     {
         // initialise instance variables
         x = 0;
