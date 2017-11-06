@@ -1,5 +1,5 @@
 package interfaces;
 
-public interface Leaf {
+public interface Leaf extends Component{
 	void operation();
 }
