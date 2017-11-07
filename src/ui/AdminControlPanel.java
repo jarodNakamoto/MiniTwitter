@@ -1,34 +1,68 @@
 package ui;
 
-/**
- * Write a description of class AdminControlPanel here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class AdminControlPanel
+import java.awt.*;
+import javax.swing.*;
+
+import Users.UserGroup;
+
+public class AdminControlPanel extends JFrame
 {
-    // instance variables - replace the example below with your own
-    private int x;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor for objects of class AdminControlPanel
-     */
-    public AdminControlPanel()
-    {
-        // initialise instance variables
-        x = 0;
+	//singleton stuff
+    private static AdminControlPanel instance;
+    
+    //gui stuff
+    private final int WINDOW_WIDTH = 1280;
+    private final int WINDOW_HEIGHT = 720;
+    
+    //panels
+    private JPanel westPanel;
+    private JPanel eastPanel;
+    
+    //user things
+    private UserGroup root;
+    
+    private AdminControlPanel() {
+    	// set the title
+        setTitle("MiniTwitter-Jarod Nakamoto");
+        
+        //specify what happens when the close button is clicked
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //create BorderLayout manager
+        setLayout(new GridLayout());
+        
+        // set the size of the window
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        //
+        root = new UserGroup();
+        
+        //setup window
+        buildPanels();
+        
+        //display window
+        setVisible(true);
     }
-
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    
+    public static AdminControlPanel getInstance() {
+    	if(instance == null) {
+    		instance = new AdminControlPanel();
+    	}
+    	return instance;
+    }
+    
+    private void buildPanels() {
+    	//build panels
+    	westPanel = new TreeViewPanel();
+    	eastPanel = new EastControlPanel();
+    	
+    	//add panels to content page
+    	add(westPanel, BorderLayout.WEST);
+        add(eastPanel, BorderLayout.EAST);
     }
 }
