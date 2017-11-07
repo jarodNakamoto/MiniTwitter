@@ -59,7 +59,7 @@ public class TreeViewPanel extends  JPanel implements ProjectPanel{
 			if(c instanceof UserGroup) {
 				str += "(GROUP) " + c.toString();
 				treeTraversed.add(str);
-				addLevelToTree(((UserGroup)c).getMembers(), treeTraversed, " " + indent);
+				addLevelToTree(((UserGroup)c).getMembers(), treeTraversed, " -" + indent);
 			}
 			else {
 				str += c.toString();

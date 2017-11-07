@@ -81,9 +81,10 @@ public class UserGroup implements Composite, Element, Visitor
 
 	
 	//visitor methods
+	//we visit a user group
 	@Override
 	public void visitUserGroup(UserGroup g) {
-		add(g);
+		g.add(this);
 	}
 
 

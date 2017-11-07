@@ -33,6 +33,8 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 	private JButton groupTotal;
 	private JButton msgTotal;
 	private JButton positivePercentage;
+	private JTextField idToAdd;
+	private JButton addToGroup;
 	private ArrayList<UserViewPanel> userPanels;
 	
 	
@@ -54,6 +56,12 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 		openUserView = new JButton("Open User View");
 		openUserView.addActionListener(new OpenUserViewButtonListener());
 		setUpLongComponentRow(openUserView, 3);
+		
+		//to handle moving things into groups
+		idToAdd = new JTextField("ID to add to Group");
+		addToGroup = new JButton("Add to Group");
+		addToGroup.addActionListener(new AddToGroupButtonListener());
+		setUpRowWithTwoThings(idToAdd, addToGroup, 4);
 		
 		//top padding
 		c.insets = new Insets(320,0,0,0);
@@ -209,6 +217,16 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
         		positivePercentage.setText("Positive Percentage: " + AdminControlPanel.getInstance().getPositivePercentage());
         	}
         	isDisplaying = !isDisplaying;
+        }
+    }
+	
+	private class AddToGroupButtonListener implements ActionListener{
+		
+        public void actionPerformed(ActionEvent e)
+        {
+        	String id = idToAdd.getText();
+        	String groupId = groupID.getText();
+        	AdminControlPanel.getInstance().addToGroup(groupId, id);
         }
     }
 }

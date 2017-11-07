@@ -52,6 +52,7 @@ public class UserViewPanel extends JFrame implements ProjectPanel
         this.user = user;
         setTitle(user.getId());
         setLayout(new GridBagLayout());
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		c = new GridBagConstraints();
 		

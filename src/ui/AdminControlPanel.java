@@ -7,6 +7,7 @@ import Users.User;
 import Users.UserGroup;
 import interfaces.ProjectComponent;
 import interfaces.ProjectPanel;
+import interfaces.Visitor;
 
 public class AdminControlPanel extends JFrame implements ProjectPanel
 {
@@ -107,4 +108,29 @@ public class AdminControlPanel extends JFrame implements ProjectPanel
     	root.add(p);
     	updateScreen();
     }
+
+	public void addToGroup(String groupId, String id) {
+		boolean updated = false;
+		ProjectComponent group = root.findById(groupId);
+		ProjectComponent toAdd = root.findById(id);
+		if(group instanceof UserGroup || group != null) {
+			if(toAdd != null) {
+				//we have valid thing and group, so add thing to group
+				updated = true;
+				root.remove(toAdd);
+				((UserGroup)group).accept((Visitor)toAdd);
+			}
+			else {
+				System.out.println("Invalid ID to Add");
+			}
+		}
+		else {
+			System.out.println("Invalid Group ID");
+		}
+		//display changes if they are made
+		if(updated)
+			updateScreen();
+		else
+			System.out.println("Not updated");
+	}
 }

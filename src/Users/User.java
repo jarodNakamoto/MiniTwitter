@@ -81,15 +81,16 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
     }
 
   //visitor methods
+    //we are visiting 
   	@Override
   	public void visitUserGroup(UserGroup g) {
-  		
+  		g.add(this);
   	}
 
 
   	@Override
   	public void visitUser(User u) {
-  		
+  		u.follow(id);
   	}
 
   	//element methods
