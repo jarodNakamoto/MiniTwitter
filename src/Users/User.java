@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import interfaces.*;
+import ui.AdminControlPanel;
 
 /**
  * Write a description of class User here.
@@ -15,13 +16,36 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
 	private String id;
 	private ArrayList<User> followers;
 	private ArrayList<String> newsFeed;
+	private String mostRecentTweet;
 	
+
 	public User(){
 		followers = new ArrayList<User>();
 		newsFeed = new ArrayList<String>();
     }
     
-	//leaf methods
+	public void tweet(String message) {
+		mostRecentTweet = message;
+		newsFeed.add(0,message);
+		Notify();
+	}
+	
+	public void follow(String userId) {
+		try {
+			User us = AdminControlPanel.getInstance().findUser(userId);
+			if(us != null && !userId.equals(id)) {
+				us.Attach(this);	
+			}
+			else {
+				System.out.println("User ID Invalid...");
+			}
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	//leaf methods from composite pattern
     @Override
 	public void operation() {
 		
@@ -30,7 +54,13 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
     //subject methods
     //someone subscribes to us
     public void Attach(Observer o){
-    	followers.add((User) o);
+		for(int i = 0; i < followers.size(); i++) {
+			if(followers.get(i).getId().equals(o.toString())) {
+				System.out.println("Already Subscribed!");
+				return;
+			}
+		}
+		followers.add((User) o);
     }
     
     //someone un-subscribes from us
@@ -40,15 +70,14 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
     
     public void Notify(){
     	for(int i = 0; i < followers.size(); i++) {
-			followers.get(i).update();
+			followers.get(i).update(mostRecentTweet);
 		}
     }
     
     //observer methods
     //when someone else tweets
-    public void update(){
-    	
-    	//newsFeed.push();
+    public void update(String subjectState){
+    	newsFeed.add(0, subjectState);
     }
 
   //visitor methods
@@ -97,5 +126,30 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
 	@Override
 	public String toString() {
 		return id;
+	}
+
+	public String getMostRecentTweet() {
+		return mostRecentTweet;
+	}
+	
+	public double getCountOfPositiveMessages(String[] positiveWords) {
+		int count = 0;
+		for(int i = 0; i < newsFeed.size(); i++) {
+			if(messageContainsPositiveString(positiveWords, newsFeed.get(i))){
+				count++;
+			}
+		}
+		return (double)count;
+	}
+	
+	public boolean messageContainsPositiveString(String[] arr, String str) {
+		
+		for(int i = 0; i < arr.length; i++) {
+			if(str.toLowerCase().indexOf(arr[i]) != -1){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

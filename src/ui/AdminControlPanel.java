@@ -3,9 +3,12 @@ package ui;
 import java.awt.*;
 import javax.swing.*;
 
+import Users.User;
 import Users.UserGroup;
+import interfaces.ProjectComponent;
+import interfaces.ProjectPanel;
 
-public class AdminControlPanel extends JFrame
+public class AdminControlPanel extends JFrame implements ProjectPanel
 {
 	/**
 	 * 
@@ -20,8 +23,8 @@ public class AdminControlPanel extends JFrame
     private final int WINDOW_HEIGHT = 720;
     
     //panels
-    private JPanel westPanel;
-    private JPanel eastPanel;
+    private ProjectPanel westPanel;
+    private ProjectPanel eastPanel;
     
     //user things
     private UserGroup root;
@@ -60,27 +63,47 @@ public class AdminControlPanel extends JFrame
     private void buildPanels() {
     	//build panels
     	westPanel = new TreeViewPanel(root);
-    	eastPanel = new EastControlPanel(root);
+    	eastPanel = new EastControlPanel();
     	
     	//add panels to content page
-    	add(westPanel, BorderLayout.WEST);
-        add(eastPanel, BorderLayout.EAST);
+    	add((JPanel)westPanel, BorderLayout.WEST);
+        add((JPanel)eastPanel, BorderLayout.EAST);
     }
     
-    public static int getUserTotal() {
-    	return 0;
+    public void updateScreen() {
+    	westPanel.updateScreen();
+    	eastPanel.updateScreen();
+    	pack();
+    	setVisible(true);
     }
     
-    public static int getGroupTotal() {
-    	return 0;
+    public int getUserTotal() {
+    	return root.getUserTotal();
     }
     
-    public static int getMessageTotal() {
-    	return 0;
+    public int getGroupTotal() {
+    	return root.getUserGroupTotal();
     }
     
-    public static double getPositivePercentage() {
-    	return 0;
+    public int getMessageTotal() {
+    	return root.findMessageTotal();
     }
-  
+    
+    public double getPositivePercentage() {
+    	return root.findPositivePercentage();
+    }
+    
+    public User findUser(String userId) {
+    	ProjectComponent result = root.findById(userId);
+    	System.out.println(result);
+    	if(result != null && result instanceof User) {
+    		return (User)result;
+    	}
+    	return null;
+    }
+    
+    public void add(ProjectComponent p) {
+    	root.add(p);
+    	updateScreen();
+    }
 }

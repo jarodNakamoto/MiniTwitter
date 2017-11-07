@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JList;
@@ -8,27 +9,31 @@ import javax.swing.JScrollPane;
 
 import Users.*;
 import interfaces.ProjectComponent;
+import interfaces.ProjectPanel;
 
-public class TreeViewPanel extends  JPanel{
+public class TreeViewPanel extends  JPanel implements ProjectPanel{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	UserGroup root;
+	private UserGroup root;
 	
 	public TreeViewPanel(UserGroup root) {
 		this.root = root;
-		update();
-
+		setLayout(new BorderLayout());
+		updateScreen();
         setVisible(true);
 	}
 	
-	public void update() {
+	public void updateScreen() {
 		String[] elements = traverseTree(); 
 		JList<String> myList = new JList<String>(elements);
 		JScrollPane scrollPane = new JScrollPane(myList);
-		add(scrollPane);
+		add(scrollPane, BorderLayout.CENTER);
 	}
+	
+	
+	
 	
 	private String[] traverseTree(){
 		ArrayList<String> treeTraversed = new ArrayList<String>();
@@ -47,10 +52,15 @@ public class TreeViewPanel extends  JPanel{
 		String str;
 		for(int i = 0; i < arr.size(); i++) {
 			ProjectComponent c = arr.get(i);
-			str = indent + c.toString();
-			treeTraversed.add(str);
+			str = indent;
 			if(c instanceof UserGroup) {
+				str += "(GROUP) " + c.toString();
+				treeTraversed.add(str);
 				addLevelToTree(((UserGroup)c).getMembers(), treeTraversed, " " + indent);
+			}
+			else {
+				str += c.toString();
+				treeTraversed.add(str);
 			}
 		}
 	}

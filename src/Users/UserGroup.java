@@ -32,8 +32,10 @@ public class UserGroup implements Composite, Element, Visitor
     //useful methods
     public ProjectComponent findById(String id) {
     	ProjectComponent result = null;
+    	System.out.println("Searching for " + id);
     	for(int i = 0; i < members.size(); i++) {
     		ProjectComponent c = members.get(i); 
+    		System.out.println(c.toString());
     		if(c.toString().equals(id))
     			return c;
     		else if(c instanceof UserGroup) {
@@ -56,8 +58,12 @@ public class UserGroup implements Composite, Element, Visitor
 
 	@Override
 	public void add(ProjectComponent c) {
-		if(!members.contains(c)) {
+		if(findById(c.toString()) == null) {
 			members.add(c);
+			System.out.println("added " + c.toString()+ " to group " + toString());
+		}
+		else {
+			System.out.println("already in a thing");
 		}
 	}
 
@@ -118,5 +124,60 @@ public class UserGroup implements Composite, Element, Visitor
 	@Override
 	public String toString() {
 		return id;
+	}
+	public int getUserTotal() {
+		int count = 0;
+		for(int i = 0; i < members.size(); i++) {
+			ProjectComponent c = members.get(i);
+			if(c instanceof UserGroup) {
+				count += ((UserGroup)c).getUserTotal();
+			}
+			else {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	public int getUserGroupTotal() {
+		int count = 0;
+		for(int i = 0; i < members.size(); i++) {
+			ProjectComponent c = members.get(i);
+			if(c instanceof UserGroup) {
+				count++;
+				count += ((UserGroup)c).getUserGroupTotal();
+			}
+		}
+		return count;
+	}
+
+	public int findMessageTotal() {
+		int count = 0;
+		for(int i = 0; i < members.size(); i++) {
+			ProjectComponent c = members.get(i);
+			if(c instanceof UserGroup) {
+				count += ((UserGroup)c).getUserGroupTotal();
+			}
+			else {
+				count += ((User)c).getFollowers().size();
+			}
+		}
+		return count;
+	}
+
+	public double findPositivePercentage() {
+		String[] happyWords = {"happy","good","great","excellent"};
+		double positiveCount = 0;
+		
+		for(int i = 0; i < members.size(); i++) {
+			ProjectComponent c = members.get(i);
+			if(c instanceof UserGroup) {
+				positiveCount += ((UserGroup)c).getUserGroupTotal();
+			}
+			else {
+				positiveCount += ((User)c).getCountOfPositiveMessages(happyWords);
+			}
+		}
+		return positiveCount/findMessageTotal();
 	}
 }

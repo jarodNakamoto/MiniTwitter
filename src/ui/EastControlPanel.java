@@ -15,8 +15,9 @@ import javax.swing.JTextField;
 import Users.User;
 import Users.UserGroup;
 import interfaces.ProjectComponent;
+import interfaces.ProjectPanel;
 
-public class EastControlPanel extends JPanel{
+public class EastControlPanel extends JPanel implements ProjectPanel{
 	/**
 	 * 
 	 */
@@ -32,12 +33,9 @@ public class EastControlPanel extends JPanel{
 	private JButton msgTotal;
 	private JButton positivePercentage;
 	
-	//root
-	private UserGroup root;
+	//AdminControlPanel.getInstance()
 	
-	public EastControlPanel(UserGroup root) {
-		this.root = root;
-
+	public EastControlPanel() {
 		
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
@@ -101,6 +99,13 @@ public class EastControlPanel extends JPanel{
 		add(comp, c);
 	}
 	
+	@Override
+	public void updateScreen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//button listeners
 	private class AddUserButtonListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
@@ -108,9 +113,7 @@ public class EastControlPanel extends JPanel{
         	String userField = userID.getText();
     		User us = new User();
     		us.setId(userField);
-    		root.add(us);
-    		
-    		System.out.println("User added!");
+    		AdminControlPanel.getInstance().add(us);
         }
     }
 	
@@ -121,8 +124,7 @@ public class EastControlPanel extends JPanel{
         	String groupField = groupID.getText();
     		UserGroup grp = new UserGroup();
     		grp.setId(groupField);
-    		root.add(grp);
-    		System.out.println("Group added!");
+    		AdminControlPanel.getInstance().add(grp);
         }
     }
 	private class OpenUserViewButtonListener implements ActionListener
@@ -131,44 +133,76 @@ public class EastControlPanel extends JPanel{
         {
         	String userField = userID.getText();
         	
-    		ProjectComponent c = root.findById(userField);
+    		ProjectComponent c = AdminControlPanel.getInstance().findUser(userField);
     		if(c != null) {
     			new UserViewPanel((User)c);	
     		}
     		else {
     			User us = new User();
         		us.setId(userField);
-        		root.add(us);
+        		AdminControlPanel.getInstance().add(us);
         		new UserViewPanel(us);
     		}
         }
     }
 	private class UserTotalButtonListener implements ActionListener
     {
+		private boolean isDisplaying = false;
+		
         public void actionPerformed(ActionEvent e)
         {
-        	
+        	if(isDisplaying) {
+        		userTotal.setText("Show User Total");
+        	}
+        	else {
+        		userTotal.setText("User Total: " + AdminControlPanel.getInstance().getUserTotal());
+        	}
+        	isDisplaying = !isDisplaying;
         }
     }
 	private class GroupTotalButtonListener implements ActionListener
     {
+		private boolean isDisplaying = false;
+		
         public void actionPerformed(ActionEvent e)
         {
-        	
+        	if(isDisplaying) {
+        		groupTotal.setText("Show Group Total");
+        	}
+        	else {
+        		groupTotal.setText("Group Total: " + AdminControlPanel.getInstance().getGroupTotal());
+        	}
+        	isDisplaying = !isDisplaying;
         }
     }
 	private class MessageTotalButtonListener implements ActionListener
     {
+		private boolean isDisplaying = false;
+		
         public void actionPerformed(ActionEvent e)
         {
-        	
+        	if(isDisplaying) {
+        		msgTotal.setText("Show Message Total");
+        	}
+        	else {
+        		msgTotal.setText("Message Total: " + AdminControlPanel.getInstance().getMessageTotal());
+        	}
+        	isDisplaying = !isDisplaying;
         }
     }
 	private class PositivePercentageButtonListener implements ActionListener
     {
+		private boolean isDisplaying = false;
+		
         public void actionPerformed(ActionEvent e)
         {
-        	
+        	if(isDisplaying) {
+        		positivePercentage.setText("Show Positive Percentage");
+        	}
+        	else {
+        		positivePercentage.setText("Positive Percentage: " + AdminControlPanel.getInstance().getPositivePercentage());
+        	}
+        	isDisplaying = !isDisplaying;
         }
     }
 }

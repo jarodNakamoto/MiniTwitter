@@ -3,7 +3,8 @@ package ui;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Users.User;
+import interfaces.ProjectPanel;
 import util.Util;
 
 /**
@@ -21,7 +23,7 @@ import util.Util;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class UserViewPanel extends JFrame
+public class UserViewPanel extends JFrame implements ProjectPanel
 {
     /**
 	 * 
@@ -30,6 +32,13 @@ public class UserViewPanel extends JFrame
 	//gui stuff
     private final int WINDOW_WIDTH = 500;
     private final int WINDOW_HEIGHT = 500;
+    private JTextField userID;
+    private JButton followUser;
+    private JTextField tweetMessage;
+    private JButton postTweet;
+    private JScrollPane currentFollowing;
+    private JScrollPane tweets;
+    
     
 	// references the user 
     private User user;
@@ -46,35 +55,52 @@ public class UserViewPanel extends JFrame
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		c = new GridBagConstraints();
 		
-		JTextField userID = new JTextField("User ID");
-		JButton followUser = new JButton("Follow User");
+		userID = new JTextField("User ID");
+		followUser = new JButton("Follow User");
+		followUser.addActionListener(new FollowButtonListener());
 		setUpRowWithTwoThings(userID, followUser, 0);
 		
-		//list of followers
-		ArrayList<User> followers = user.getFollowers();
-		String[] f = Util.convertToArray(followers);
-		JList jList = new JList(f);
-		JScrollPane scrollPane = new JScrollPane(jList);
-		setUpLongComponentRow(scrollPane, 3);
+		updateFollowing();
 		
-		JTextField tweetMessage = new JTextField("Tweet Message");	
-		JButton postTweet = new JButton("Post Tweet");
+		tweetMessage = new JTextField("Tweet Message");	
+		postTweet = new JButton("Post Tweet");
+		postTweet.addActionListener(new TweetButtonListener());
 		setUpRowWithTwoThings(tweetMessage, postTweet, 5);
 		
-		//list of followers
-		ArrayList<String> feed = user.getNewsFeed();
-		String[] f2 = Util.convertToArray(feed);
-		JList jList2 = new JList(f2);
-		JScrollPane scrollPane2 = new JScrollPane(jList2);
-		setUpLongComponentRow(scrollPane2, 6);
+		updateTweets();
 		
+		pack();
+		setVisible(true);
+    }
+    
+    private void updateFollowing() {
+    	//list of followers
+		ArrayList<User> followers = (ArrayList<User>)(user.getFollowers().clone());
+		User temp = new User();
+		temp.setId("Current Following:");
+		followers.add(0, temp);
+		String[] f = Util.convertToArray(followers);
+		JList<String> jList = new JList<String>(f);
+		currentFollowing = new JScrollPane(jList);
+		setUpLongComponentRow(currentFollowing, 3);
+		pack();
+		setVisible(true);
+    }
+    
+    private void updateTweets() {
+    	//list of tweets
+		ArrayList<String> feed = (ArrayList<String>)(user.getNewsFeed().clone());
+		feed.add(0, "News Feed: ");
+		String[] f2 = Util.convertToArray(feed);
+		JList<String> jList2 = new JList<String>(f2);
+		tweets = new JScrollPane(jList2);
+		setUpLongComponentRow(tweets, 6);
 		pack();
 		setVisible(true);
     }
 
     private void setUpRowWithTwoThings(Component c1, Component c2, int y) {
 		c.fill = GridBagConstraints.HORIZONTAL;
-		//c.weightx = 0.0;
 		c.gridwidth= 1;
 		c.ipady = 40;
 		c.gridx = 0;
@@ -98,6 +124,14 @@ public class UserViewPanel extends JFrame
 		add(comp, c);
 	}
     
+	
+	
+	@Override
+	public void updateScreen() {
+		updateTweets();
+		updateFollowing();
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -106,5 +140,23 @@ public class UserViewPanel extends JFrame
 		this.user = user;
 	}
 	
-	
+	//button listeners
+	private class TweetButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	String message = tweetMessage.getText();
+        	user.tweet("- " + user.getId() + ": " + message);
+        	updateScreen();
+        }
+    }
+	private class FollowButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	String id = userID.getText();
+        	user.follow(id);
+        	updateScreen();
+        }
+    }
 }
