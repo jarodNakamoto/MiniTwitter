@@ -4,11 +4,17 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import Users.User;
+import Users.UserGroup;
+import interfaces.ProjectComponent;
 
 public class EastControlPanel extends JPanel{
 	/**
@@ -16,35 +22,56 @@ public class EastControlPanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints c;
+	private JButton addUser;
+	private JTextField userID;
+	private JTextField groupID;
+	private JButton addGroup;
+	private JButton openUserView;
+	private JButton userTotal;
+	private JButton groupTotal;
+	private JButton msgTotal;
+	private JButton positivePercentage;
 	
+	//root
+	private UserGroup root;
 	
-	public EastControlPanel() {
+	public EastControlPanel(UserGroup root) {
+		this.root = root;
+
+		
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
 		
-		JTextField userID = new JTextField("User ID");
-		JButton addUser = new JButton("Add User");
+		userID = new JTextField("User ID");
+		addUser = new JButton("Add User");
+		addUser.addActionListener(new AddUserButtonListener());
 		setUpRowWithTwoThings(userID, addUser, 0);
 		
-		JTextField groupID = new JTextField("Group ID");
-		JButton addGroup = new JButton("Add Group");
+		groupID = new JTextField("Group ID");
+		addGroup = new JButton("Add Group");
+		addGroup.addActionListener(new AddGroupButtonListener());
 		setUpRowWithTwoThings(groupID, addGroup, 1);
 		
-		JButton openUserView = new JButton("Open User View");
+		openUserView = new JButton("Open User View");
+		openUserView.addActionListener(new OpenUserViewButtonListener());
 		setUpLongComponentRow(openUserView, 3);
 		
 		//top padding
 		c.insets = new Insets(320,0,0,0);
 		
-		JButton userTotal = new JButton("Show User Total"); 	
-		JButton groupTotal = new JButton("Show Group Total");
+		userTotal = new JButton("Show User Total");
+		userTotal.addActionListener(new UserTotalButtonListener());
+		groupTotal = new JButton("Show Group Total");
+		groupTotal.addActionListener(new GroupTotalButtonListener());
 		setUpRowWithTwoThings(userTotal, groupTotal, 5);
 		
 		//no padding
 		c.insets = new Insets(0,0,0,0);
 		
-		JButton msgTotal = new JButton("Show Messages Total");
-		JButton positivePercentage = new JButton("Show Positive Percentage");
+		msgTotal = new JButton("Show Messages Total");
+		msgTotal.addActionListener(new MessageTotalButtonListener());
+		positivePercentage = new JButton("Show Positive Percentage");
+		positivePercentage.addActionListener(new PositivePercentageButtonListener());
 		setUpRowWithTwoThings(msgTotal, positivePercentage, 6);
 	}
 	
@@ -73,4 +100,75 @@ public class EastControlPanel extends JPanel{
 		c.gridy = y;
 		add(comp, c);
 	}
+	
+	private class AddUserButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	String userField = userID.getText();
+    		User us = new User();
+    		us.setId(userField);
+    		root.add(us);
+    		
+    		System.out.println("User added!");
+        }
+    }
+	
+	private class AddGroupButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	String groupField = groupID.getText();
+    		UserGroup grp = new UserGroup();
+    		grp.setId(groupField);
+    		root.add(grp);
+    		System.out.println("Group added!");
+        }
+    }
+	private class OpenUserViewButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	String userField = userID.getText();
+        	
+    		ProjectComponent c = root.findById(userField);
+    		if(c != null) {
+    			new UserViewPanel((User)c);	
+    		}
+    		else {
+    			User us = new User();
+        		us.setId(userField);
+        		root.add(us);
+        		new UserViewPanel(us);
+    		}
+        }
+    }
+	private class UserTotalButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	
+        }
+    }
+	private class GroupTotalButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	
+        }
+    }
+	private class MessageTotalButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	
+        }
+    }
+	private class PositivePercentageButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+        	
+        }
+    }
 }

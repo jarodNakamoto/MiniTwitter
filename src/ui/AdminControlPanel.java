@@ -41,6 +41,7 @@ public class AdminControlPanel extends JFrame
         
         //
         root = new UserGroup();
+        root.setId("Root");
         
         //setup window
         buildPanels();
@@ -58,11 +59,28 @@ public class AdminControlPanel extends JFrame
     
     private void buildPanels() {
     	//build panels
-    	westPanel = new TreeViewPanel();
-    	eastPanel = new EastControlPanel();
+    	westPanel = new TreeViewPanel(root);
+    	eastPanel = new EastControlPanel(root);
     	
     	//add panels to content page
     	add(westPanel, BorderLayout.WEST);
         add(eastPanel, BorderLayout.EAST);
     }
+    
+    public static int getUserTotal() {
+    	return 0;
+    }
+    
+    public static int getGroupTotal() {
+    	return 0;
+    }
+    
+    public static int getMessageTotal() {
+    	return 0;
+    }
+    
+    public static double getPositivePercentage() {
+    	return 0;
+    }
+  
 }

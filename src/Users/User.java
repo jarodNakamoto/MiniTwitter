@@ -14,11 +14,11 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
 {
 	private String id;
 	private ArrayList<User> followers;
-	private Stack<String> newsFeed;
+	private ArrayList<String> newsFeed;
 	
 	public User(){
 		followers = new ArrayList<User>();
-		newsFeed = new Stack<String>();
+		newsFeed = new ArrayList<String>();
     }
     
 	//leaf methods
@@ -86,11 +86,16 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
 		this.followers = followers;
 	}
 
-	public Stack<String> getNewsFeed() {
+	public ArrayList<String> getNewsFeed() {
 		return newsFeed;
 	}
 
-	public void setNewsFeed(Stack<String> newsFeed) {
+	public void setNewsFeed(ArrayList<String> newsFeed) {
 		this.newsFeed = newsFeed;
+	}
+	
+	@Override
+	public String toString() {
+		return id;
 	}
 }

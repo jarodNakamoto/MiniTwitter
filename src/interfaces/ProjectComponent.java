@@ -1,5 +1,5 @@
 package interfaces;
 
-public interface Component {
+public interface ProjectComponent {
 	void operation();
 }

@@ -1,8 +1,8 @@
 package interfaces;
 
-public interface Composite extends Component {
+public interface Composite extends ProjectComponent {
 	void operation();
-	void add(Component c);
-	void remove(Component c);
-	Component getChild(int i);
+	void add(ProjectComponent c);
+	void remove(ProjectComponent c);
+	ProjectComponent getChild(int i);
 }

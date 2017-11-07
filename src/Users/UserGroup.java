@@ -1,6 +1,6 @@
 package Users;
 
-import interfaces.Component;
+import interfaces.ProjectComponent;
 import interfaces.Composite;
 import interfaces.Element;
 import interfaces.Visitor;
@@ -16,14 +16,33 @@ import java.util.ArrayList;
 public class UserGroup implements Composite, Element, Visitor
 {
 	private String id;
-    private ArrayList<Component> members;
+    private ArrayList<ProjectComponent> members;
 
-    /**
+    
+
+
+	/**
      * Constructor for objects of class UserGroup
      */
     public UserGroup()
     {
-        members = new ArrayList<Component>();
+        members = new ArrayList<ProjectComponent>();
+    }
+    
+    //useful methods
+    public ProjectComponent findById(String id) {
+    	ProjectComponent result = null;
+    	for(int i = 0; i < members.size(); i++) {
+    		ProjectComponent c = members.get(i); 
+    		if(c.toString().equals(id))
+    			return c;
+    		else if(c instanceof UserGroup) {
+    			result = ((UserGroup) c).findById(id);
+    			if(result != null)
+    				return result;
+    		}
+    	}
+    	return result;
     }
 
     
@@ -36,21 +55,21 @@ public class UserGroup implements Composite, Element, Visitor
 	}
 
 	@Override
-	public void add(Component c) {
+	public void add(ProjectComponent c) {
 		if(!members.contains(c)) {
 			members.add(c);
 		}
 	}
 
 	@Override
-	public void remove(Component c) {
+	public void remove(ProjectComponent c) {
 		if(members.contains(c)) {
 			members.remove(c);
 		}
 	}
 
 	@Override
-	public Component getChild(int i) {
+	public ProjectComponent getChild(int i) {
 		if(i > -1 && i < members.size()) {
 			return members.get(i);
 		}
@@ -61,15 +80,13 @@ public class UserGroup implements Composite, Element, Visitor
 	//visitor methods
 	@Override
 	public void visitUserGroup(UserGroup g) {
-		// TODO Auto-generated method stub
-		
+		add(g);
 	}
 
 
 	@Override
 	public void visitUser(User u) {
-		// TODO Auto-generated method stub
-		
+		add(u);
 	}
 
 	//element methods
@@ -87,5 +104,19 @@ public class UserGroup implements Composite, Element, Visitor
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public ArrayList<ProjectComponent> getMembers() {
+		return members;
+	}
+
+
+	public void setMembers(ArrayList<ProjectComponent> members) {
+		this.members = members;
+	}
+	
+	@Override
+	public String toString() {
+		return id;
 	}
 }
