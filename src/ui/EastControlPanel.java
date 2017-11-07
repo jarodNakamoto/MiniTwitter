@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -32,11 +33,11 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 	private JButton groupTotal;
 	private JButton msgTotal;
 	private JButton positivePercentage;
+	private ArrayList<UserViewPanel> userPanels;
 	
-	//AdminControlPanel.getInstance()
 	
 	public EastControlPanel() {
-		
+		userPanels = new ArrayList<UserViewPanel>();
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
 		
@@ -99,10 +100,15 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 		add(comp, c);
 	}
 	
+	public void closeUserScreen(UserViewPanel up) {
+		userPanels.remove(up);
+	}
+	
 	@Override
 	public void updateScreen() {
-		// TODO Auto-generated method stub
-		
+		for(int i = 0; i < userPanels.size(); i++) {
+			userPanels.get(i).updateScreen();
+		}
 	}
 
 	//button listeners
@@ -135,13 +141,13 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
         	
     		ProjectComponent c = AdminControlPanel.getInstance().findUser(userField);
     		if(c != null) {
-    			new UserViewPanel((User)c);	
+    			userPanels.add(new UserViewPanel((User)c));	
     		}
     		else {
     			User us = new User();
         		us.setId(userField);
         		AdminControlPanel.getInstance().add(us);
-        		new UserViewPanel(us);
+        		userPanels.add(new UserViewPanel(us));
     		}
         }
     }

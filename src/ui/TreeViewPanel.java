@@ -17,6 +17,7 @@ public class TreeViewPanel extends  JPanel implements ProjectPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private UserGroup root;
+	private JScrollPane myScrollPane;
 	
 	public TreeViewPanel(UserGroup root) {
 		this.root = root;
@@ -28,8 +29,10 @@ public class TreeViewPanel extends  JPanel implements ProjectPanel{
 	public void updateScreen() {
 		String[] elements = traverseTree(); 
 		JList<String> myList = new JList<String>(elements);
-		JScrollPane scrollPane = new JScrollPane(myList);
-		add(scrollPane, BorderLayout.CENTER);
+		if(myScrollPane != null)
+			remove(myScrollPane);
+		myScrollPane = new JScrollPane(myList);
+		add(myScrollPane, BorderLayout.CENTER);
 	}
 	
 	

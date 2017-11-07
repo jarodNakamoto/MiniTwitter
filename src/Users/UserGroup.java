@@ -18,9 +18,6 @@ public class UserGroup implements Composite, Element, Visitor
 	private String id;
     private ArrayList<ProjectComponent> members;
 
-    
-
-
 	/**
      * Constructor for objects of class UserGroup
      */
@@ -35,7 +32,7 @@ public class UserGroup implements Composite, Element, Visitor
     	System.out.println("Searching for " + id);
     	for(int i = 0; i < members.size(); i++) {
     		ProjectComponent c = members.get(i); 
-    		System.out.println(c.toString());
+    		//System.out.println(c.toString());
     		if(c.toString().equals(id))
     			return c;
     		else if(c instanceof UserGroup) {
@@ -159,7 +156,8 @@ public class UserGroup implements Composite, Element, Visitor
 				count += ((UserGroup)c).getUserGroupTotal();
 			}
 			else {
-				count += ((User)c).getFollowers().size();
+				count += ((User)c).getNewsFeed().size();
+				System.out.println(((User)c).getNewsFeed().size());
 			}
 		}
 		return count;

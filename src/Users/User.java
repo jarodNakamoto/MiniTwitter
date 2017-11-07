@@ -1,6 +1,5 @@
 package Users;
 import java.util.ArrayList;
-import java.util.Stack;
 
 import interfaces.*;
 import ui.AdminControlPanel;
@@ -72,6 +71,7 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
     	for(int i = 0; i < followers.size(); i++) {
 			followers.get(i).update(mostRecentTweet);
 		}
+    	AdminControlPanel.getInstance().updateScreen();
     }
     
     //observer methods

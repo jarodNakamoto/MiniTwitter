@@ -60,17 +60,12 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		followUser.addActionListener(new FollowButtonListener());
 		setUpRowWithTwoThings(userID, followUser, 0);
 		
-		updateFollowing();
-		
 		tweetMessage = new JTextField("Tweet Message");	
 		postTweet = new JButton("Post Tweet");
 		postTweet.addActionListener(new TweetButtonListener());
 		setUpRowWithTwoThings(tweetMessage, postTweet, 5);
 		
-		updateTweets();
-		
-		pack();
-		setVisible(true);
+		updateScreen();
     }
     
     private void updateFollowing() {
@@ -81,10 +76,10 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		followers.add(0, temp);
 		String[] f = Util.convertToArray(followers);
 		JList<String> jList = new JList<String>(f);
+		if(currentFollowing != null)
+			remove(currentFollowing);
 		currentFollowing = new JScrollPane(jList);
 		setUpLongComponentRow(currentFollowing, 3);
-		pack();
-		setVisible(true);
     }
     
     private void updateTweets() {
@@ -93,10 +88,10 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		feed.add(0, "News Feed: ");
 		String[] f2 = Util.convertToArray(feed);
 		JList<String> jList2 = new JList<String>(f2);
+		if(tweets != null)
+			remove(tweets);
 		tweets = new JScrollPane(jList2);
 		setUpLongComponentRow(tweets, 6);
-		pack();
-		setVisible(true);
     }
 
     private void setUpRowWithTwoThings(Component c1, Component c2, int y) {
@@ -130,6 +125,8 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 	public void updateScreen() {
 		updateTweets();
 		updateFollowing();
+		pack();
+		setVisible(true);
 	}
 
 	public User getUser() {
@@ -148,6 +145,7 @@ public class UserViewPanel extends JFrame implements ProjectPanel
         	String message = tweetMessage.getText();
         	user.tweet("- " + user.getId() + ": " + message);
         	updateScreen();
+        	AdminControlPanel.getInstance().updateScreen();
         }
     }
 	private class FollowButtonListener implements ActionListener
@@ -157,6 +155,7 @@ public class UserViewPanel extends JFrame implements ProjectPanel
         	String id = userID.getText();
         	user.follow(id);
         	updateScreen();
+        	AdminControlPanel.getInstance().updateScreen();
         }
     }
 }

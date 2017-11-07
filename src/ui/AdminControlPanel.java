@@ -74,6 +74,7 @@ public class AdminControlPanel extends JFrame implements ProjectPanel
     	westPanel.updateScreen();
     	eastPanel.updateScreen();
     	pack();
+    	setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     	setVisible(true);
     }
     
