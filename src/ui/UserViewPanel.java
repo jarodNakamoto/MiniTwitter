@@ -38,6 +38,8 @@ public class UserViewPanel extends JFrame implements ProjectPanel
     private JButton postTweet;
     private JScrollPane currentFollowing;
     private JScrollPane tweets;
+    private JButton updateTime;
+    private JTextField creationTime;
     
     
 	// references the user 
@@ -66,6 +68,14 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		postTweet.addActionListener(new TweetButtonListener());
 		setUpRowWithTwoThings(tweetMessage, postTweet, 5);
 		
+		long timeMade = user.getCreationTime();
+		creationTime = new JTextField("Creation Time: " + timeMade);
+		
+		updateTime = new JButton("Display Update Time");
+		updateTime.addActionListener(new DisplayUpdateTimeButtonListener());;
+		
+		setUpRowWithTwoThings(creationTime, updateTime, 6);
+		
 		updateScreen();
     }
     
@@ -77,8 +87,9 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		followers.add(0, temp);
 		String[] f = Util.convertToArray(followers);
 		JList<String> jList = new JList<String>(f);
-		if(currentFollowing != null)
+		if(currentFollowing != null) {
 			remove(currentFollowing);
+		}
 		currentFollowing = new JScrollPane(jList);
 		setUpLongComponentRow(currentFollowing, 3);
     }
@@ -89,10 +100,11 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		feed.add(0, "News Feed: ");
 		String[] f2 = Util.convertToArray(feed);
 		JList<String> jList2 = new JList<String>(f2);
-		if(tweets != null)
+		if(tweets != null) {
 			remove(tweets);
+		}
 		tweets = new JScrollPane(jList2);
-		setUpLongComponentRow(tweets, 6);
+		setUpLongComponentRow(tweets, 7);
     }
 
     private void setUpRowWithTwoThings(Component c1, Component c2, int y) {
@@ -139,24 +151,34 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 	}
 	
 	//button listeners
-	private class TweetButtonListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
+	private class TweetButtonListener implements ActionListener{
+        public void actionPerformed(ActionEvent e){
         	String message = tweetMessage.getText();
         	user.tweet("- " + user.getId() + ": " + message);
         	updateScreen();
         	AdminControlPanel.getInstance().updateScreen();
         }
     }
-	private class FollowButtonListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
+	private class FollowButtonListener implements ActionListener{
+        public void actionPerformed(ActionEvent e){
         	String id = userID.getText();
         	user.follow(id);
         	updateScreen();
         	AdminControlPanel.getInstance().updateScreen();
+        }
+    }
+	
+	private class DisplayUpdateTimeButtonListener implements ActionListener{
+		private boolean isDisplaying = false;
+		
+        public void actionPerformed(ActionEvent e){
+        	if(isDisplaying) {
+        		updateTime.setText("Show Updatetime");
+        	}
+        	else {
+        		updateTime.setText("UpdateTime: " + user.getLastUpdateTime());
+        	}
+        	isDisplaying = !isDisplaying;
         }
     }
 }

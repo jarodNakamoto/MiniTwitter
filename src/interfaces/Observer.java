@@ -8,5 +8,5 @@ package interfaces;
  */
 public interface Observer
 {
-    void update(String subjectState);
+    void update(String subjectState, long updateTime);
 }

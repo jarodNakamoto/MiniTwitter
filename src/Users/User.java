@@ -23,11 +23,13 @@ public class User extends CreatedUser implements Subject, Observer, Leaf, Visito
 		super();
 		followers = new ArrayList<User>();
 		newsFeed = new ArrayList<String>();
+		lastUpdateTime = System.currentTimeMillis();
     }
     
 	public void tweet(String message) {
 		mostRecentTweet = message;
 		newsFeed.add(0,message);
+		lastUpdateTime = System.currentTimeMillis();
 		Notify();
 	}
 	
@@ -71,15 +73,16 @@ public class User extends CreatedUser implements Subject, Observer, Leaf, Visito
     
     public void Notify(){
     	for(int i = 0; i < followers.size(); i++) {
-			followers.get(i).update(mostRecentTweet);
+			followers.get(i).update(mostRecentTweet, lastUpdateTime);
 		}
     	AdminControlPanel.getInstance().updateScreen();
     }
     
     //observer methods
     //when someone else tweets
-    public void update(String subjectState){
+    public void update(String subjectState, long updateTime){
     	newsFeed.add(0, subjectState);
+    	lastUpdateTime = updateTime;
     }
 
   //visitor methods
