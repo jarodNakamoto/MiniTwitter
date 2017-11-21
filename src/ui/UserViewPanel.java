@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -69,7 +70,8 @@ public class UserViewPanel extends JFrame implements ProjectPanel
 		setUpRowWithTwoThings(tweetMessage, postTweet, 5);
 		
 		long timeMade = user.getCreationTime();
-		creationTime = new JTextField("Creation Time: " + timeMade);
+		Date formattedTime = new Date(timeMade);
+		creationTime = new JTextField("Creation Time: " + formattedTime.toString());
 		
 		updateTime = new JButton("Display Update Time");
 		updateTime.addActionListener(new DisplayUpdateTimeButtonListener());;
@@ -176,7 +178,8 @@ public class UserViewPanel extends JFrame implements ProjectPanel
         		updateTime.setText("Show Updatetime");
         	}
         	else {
-        		updateTime.setText("UpdateTime: " + user.getLastUpdateTime());
+        		Date formattedTime = new Date(user.getLastUpdateTime());
+        		updateTime.setText("UpdateTime: " + formattedTime.toString());
         	}
         	isDisplaying = !isDisplaying;
         }
