@@ -204,4 +204,28 @@ public class UserGroup extends CreatedUser implements Composite, Element, Visito
 		}
 		return true;
 	}
+
+	public User findLastUpdatedUser() {
+		User mostRecent = null;
+		long time = 0;
+		for(int i = 0; i < members.size(); i++) {
+			ProjectComponent c = members.get(i);
+			User u;
+			if(c instanceof UserGroup) {
+				//don't check the group if it has an invalid id
+				u = ((UserGroup)c).findLastUpdatedUser();
+			}
+			else {
+				u = ((User)c);
+			}
+			if(u != null) {
+				long temp = u.getLastUpdateTime();
+				if(temp > time) {
+					mostRecent = u;
+					time = temp;
+				}
+			}
+		}
+		return mostRecent;
+	}
 }

@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.sun.javafx.scene.control.skin.LabelSkin;
+
 import Users.User;
 import Users.UserGroup;
 import interfaces.ProjectComponent;
@@ -36,6 +38,7 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 	private JTextField idToAdd;
 	private JButton addToGroup;
 	private JButton idsValid;
+	private JButton findLastUpdatedUser;
 	private ArrayList<UserViewPanel> userPanels;
 	
 	
@@ -64,19 +67,29 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 		addToGroup.addActionListener(new AddToGroupButtonListener());
 		setUpRowWithTwoThings(idToAdd, addToGroup, 4);
 		
+
+		//top padding
+		c.insets = new Insets(75,0,0,0);
+		
 		//to handle checking id validity
 		idsValid = new JButton("ID Validity Check");
 		idsValid.addActionListener(new IDVerificationButtonListener());
 		setUpLongComponentRow(idsValid, 5);
+		//no padding
+		c.insets = new Insets(0,0,0,0);
+		//handle finding last updated user
+		findLastUpdatedUser = new JButton("Find Last Updated User");
+		findLastUpdatedUser.addActionListener(new FindLastUpdatedUserButtonListener());
+		setUpLongComponentRow(findLastUpdatedUser, 6);
 		
 		//top padding
-		c.insets = new Insets(320,0,0,0);
+		c.insets = new Insets(75,0,0,0);
 		
 		userTotal = new JButton("Show User Total");
 		userTotal.addActionListener(new UserTotalButtonListener());
 		groupTotal = new JButton("Show Group Total");
 		groupTotal.addActionListener(new GroupTotalButtonListener());
-		setUpRowWithTwoThings(userTotal, groupTotal, 5);
+		setUpRowWithTwoThings(userTotal, groupTotal, 7);
 		
 		//no padding
 		c.insets = new Insets(0,0,0,0);
@@ -85,7 +98,7 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 		msgTotal.addActionListener(new MessageTotalButtonListener());
 		positivePercentage = new JButton("Show Positive Percentage");
 		positivePercentage.addActionListener(new PositivePercentageButtonListener());
-		setUpRowWithTwoThings(msgTotal, positivePercentage, 6);
+		setUpRowWithTwoThings(msgTotal, positivePercentage, 8);
 	}
 	
 	private void setUpRowWithTwoThings(Component c1, Component c2, int y) {
@@ -247,6 +260,20 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
         	}
         	else {
         		System.out.println("invalid.");
+        	}
+        }
+    }
+	
+	private class FindLastUpdatedUserButtonListener implements ActionListener{
+		
+        public void actionPerformed(ActionEvent e)
+        {
+        	User lastUpdated = AdminControlPanel.getInstance().findLastUpdatedUser();
+        	if(lastUpdated != null) {
+        		System.out.println("Last Updated User: " + lastUpdated.getId());
+        	}
+        	else {
+        		System.out.println("Users Not Updated");
         	}
         }
     }

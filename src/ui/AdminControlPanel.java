@@ -137,4 +137,8 @@ public class AdminControlPanel extends JFrame implements ProjectPanel
 	public boolean allIdsValid() {
 		return root.allIDsValid();
 	}
+
+	public User findLastUpdatedUser() {
+		return root.findLastUpdatedUser();
+	}
 }
