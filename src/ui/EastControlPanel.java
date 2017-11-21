@@ -35,6 +35,7 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 	private JButton positivePercentage;
 	private JTextField idToAdd;
 	private JButton addToGroup;
+	private JButton idsValid;
 	private ArrayList<UserViewPanel> userPanels;
 	
 	
@@ -62,6 +63,11 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
 		addToGroup = new JButton("Add to Group");
 		addToGroup.addActionListener(new AddToGroupButtonListener());
 		setUpRowWithTwoThings(idToAdd, addToGroup, 4);
+		
+		//to handle checking id validity
+		idsValid = new JButton("ID Validity Check");
+		idsValid.addActionListener(new IDVerificationButtonListener());
+		setUpLongComponentRow(idsValid, 5);
 		
 		//top padding
 		c.insets = new Insets(320,0,0,0);
@@ -227,6 +233,21 @@ public class EastControlPanel extends JPanel implements ProjectPanel{
         	String id = idToAdd.getText();
         	String groupId = groupID.getText();
         	AdminControlPanel.getInstance().addToGroup(groupId, id);
+        }
+    }
+	
+	private class IDVerificationButtonListener implements ActionListener{
+		
+        public void actionPerformed(ActionEvent e)
+        {
+        	boolean allIDsValid = AdminControlPanel.getInstance().allIdsValid();
+        	System.out.print("All IDs are " );
+        	if(allIDsValid) {
+        		System.out.println("valid.");
+        	}
+        	else {
+        		System.out.println("invalid.");
+        	}
         }
     }
 }

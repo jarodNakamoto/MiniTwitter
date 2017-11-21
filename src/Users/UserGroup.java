@@ -4,6 +4,7 @@ import interfaces.ProjectComponent;
 import interfaces.Composite;
 import interfaces.Element;
 import interfaces.Visitor;
+import util.Util;
 
 import java.util.ArrayList;
 
@@ -13,16 +14,15 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class UserGroup implements Composite, Element, Visitor
-{
+public class UserGroup extends CreatedUser implements Composite, Element, Visitor{
 	private String id;
     private ArrayList<ProjectComponent> members;
 
 	/**
      * Constructor for objects of class UserGroup
      */
-    public UserGroup()
-    {
+    public UserGroup(){
+		super();
         members = new ArrayList<ProjectComponent>();
     }
     
@@ -178,5 +178,30 @@ public class UserGroup implements Composite, Element, Visitor
 			}
 		}
 		return positiveCount/findMessageTotal();
+	}
+	
+	public boolean allIDsValid() {
+		for(int i = 0; i < members.size(); i++) {
+			ProjectComponent c = members.get(i);
+			boolean projectComponentIsValid;
+			if(c instanceof UserGroup) {
+				//don't check the group if it has an invalid id
+				if(Util.isValidID(((UserGroup)c).getId())) {
+					projectComponentIsValid = ((UserGroup)c).allIDsValid();
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				projectComponentIsValid = Util.isValidID(((User)c).getId());
+			}
+			
+			if(!projectComponentIsValid) {
+				System.out.println(projectComponentIsValid);
+				return false;
+			}
+		}
+		return true;
 	}
 }

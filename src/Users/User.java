@@ -10,15 +10,17 @@ import ui.AdminControlPanel;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class User implements Subject, Observer, Leaf, Visitor, Element
+public class User extends CreatedUser implements Subject, Observer, Leaf, Visitor, Element
 {
 	private String id;
 	private ArrayList<User> followers;
 	private ArrayList<String> newsFeed;
 	private String mostRecentTweet;
+	private long lastUpdateTime;
 	
 
 	public User(){
+		super();
 		followers = new ArrayList<User>();
 		newsFeed = new ArrayList<String>();
     }
@@ -124,6 +126,14 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
 		this.newsFeed = newsFeed;
 	}
 	
+	public long getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(long lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+	
 	@Override
 	public String toString() {
 		return id;
@@ -132,6 +142,8 @@ public class User implements Subject, Observer, Leaf, Visitor, Element
 	public String getMostRecentTweet() {
 		return mostRecentTweet;
 	}
+	
+	
 	
 	public double getCountOfPositiveMessages(String[] positiveWords) {
 		int count = 0;

@@ -133,4 +133,8 @@ public class AdminControlPanel extends JFrame implements ProjectPanel
 		else
 			System.out.println("Not updated");
 	}
+	
+	public boolean allIdsValid() {
+		return root.allIDsValid();
+	}
 }

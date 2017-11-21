@@ -10,4 +10,9 @@ public class Util{
 		}
 		return f;
 	}
+	
+	public static boolean isValidID(String id) {
+		int spaceIndex = id.indexOf(" ");
+		return spaceIndex == -1;
+	}
 }
